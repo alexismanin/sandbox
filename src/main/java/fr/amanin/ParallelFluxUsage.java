@@ -12,13 +12,24 @@ import java.util.stream.Stream;
 public class ParallelFluxUsage {
 
     public static void main(String[] args) {
-        Stream<String> messages = Flux.range(0, 100)
-                .parallel(4)
+        Stream<String> messages =
+                // Create a simple stream
+                Flux.range(0, 10)
+                // Activate parallelization of further computing
+                .parallel()
+                /* Drawback: still unclear to me: we have to force a scheduler that will properly distribute computing
+                 * upon multiple threads. By default, a "work-stealing" scheduler is used to avoid as much as possible
+                 * scattering of elements on different threads.
+                 */
                 .runOn(Schedulers.parallel())
+                 // Launch computation
                 .map(ParallelFluxUsage::compute)
+                // Once computation is done, we specify that we want next operations to be executed sequentially.
                 .sequential()
+                // Bridge to standard java stream API (return to "blocking" world)
                 .toStream();
 
+        // Print computed messages
         final long count = messages
                 .peek(message -> System.out.printf("Print on thread %s -> %s%n", Thread.currentThread(), message))
                 .count();
@@ -26,6 +37,9 @@ public class ParallelFluxUsage {
         System.out.println("Total: "+count);
     }
 
+    /**
+     * Example function, print a number along with the thread in which the message is computed into.
+     */
     private static String compute(final long nb) {
         return String.format(
                 "From %s: number %d",
