@@ -6,6 +6,8 @@ plugins {
 group = "fr.amanin"
 version = "0.1"
 
+val ktorVersion = "1.3.1"
+
 repositories {
     mavenCentral()
     maven(url="http://repo.spring.io/release")
@@ -26,6 +28,9 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.10.3")
     implementation("com.fasterxml.jackson.dataformat:jackson-dataformat-yaml:2.10.3")
     implementation("org.openpnp:opencv:4.3.0-1")
+
+    // For fr.amanin.stackoverflow.ktorstaticaccess
+    implementation("io.ktor:ktor-server-jetty:$ktorVersion")
 }
 
 configure<JavaPluginConvention> {
