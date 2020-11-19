@@ -3,6 +3,7 @@ group = "fr.amanin"
 version = "0.1"
 
 val ktorVersion = "1.3.1"
+val exposedVersion = "0.24.1"
 
 plugins {
     java
@@ -12,7 +13,9 @@ plugins {
 }
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    jcenter()
     maven(url="http://repo.spring.io/release")
 }
 
@@ -40,6 +43,15 @@ dependencies {
 
     // For fr.amanin.stackoverflow.ktorstaticaccess
     implementation("io.ktor:ktor-server-jetty:$ktorVersion")
+    implementation("com.github.ben-manes.caffeine:caffeine:2.8.5")
+
+    // For SO question https://stackoverflow.com/questions/64137800/kotlin-and-exposed-orm
+    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
+    implementation("com.h2database:h2:1.4.199")
+    implementation("com.zaxxer", "HikariCP", "3.4.5")
 }
 
 configure<JavaPluginConvention> {
