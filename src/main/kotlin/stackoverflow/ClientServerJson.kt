@@ -1,10 +1,8 @@
 package fr.amanin.stackoverflow
 
-import kotlinx.serialization.ImplicitReflectionSerializer
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonConfiguration
-import kotlinx.serialization.stringify
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.netty.Connection
@@ -24,11 +22,8 @@ import java.util.logging.Logger
 val SERV_LOG = Logger.getLogger("server")
 val CLI_LOG = Logger.getLogger("client")
 
-val json = Json(JsonConfiguration.Default)
-
 fun time() = System.currentTimeMillis()
 
-@ImplicitReflectionSerializer
 fun main() {
     val s1 = Server(9000).start()
     val s2 = Server(9001).start()
@@ -50,7 +45,6 @@ fun main() {
 @Serializable
 data class Payload(val idx: Long, val emittedAt: Long, val port: Int)
 
-@ImplicitReflectionSerializer
 class Server(val port: Int) {
 
     fun start() = TcpServer.create().port(port)
@@ -60,7 +54,7 @@ class Server(val port: Int) {
 
     fun dataStream() = Flux.interval(Duration.ofMillis(1))
         .map { Payload(it, time(), port) }
-        .map { json.stringify(it) + '\n' }
+        .map { Json.encodeToString(it) + '\n' }
         .doOnError { SERV_LOG.log(Level.WARNING, "Failure while producing messages", it) }
 }
 

@@ -7,7 +7,7 @@ val exposedVersion = "0.24.1"
 
 plugins {
     java
-    val ktVersion = "1.3.72"
+    val ktVersion = "1.5.0"
     kotlin("jvm") version ktVersion
     kotlin("plugin.serialization") version ktVersion
 }
@@ -24,11 +24,12 @@ dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5")
     // Kt serialization
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-runtime:0.20.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.2.1")
 
     // Spring reactive stack
-    implementation(platform("io.projectreactor:reactor-bom:Dysprosium-SR7"))
-    implementation("io.projectreactor:reactor-core")
+    implementation("org.springframework:spring-webflux:5.3.7")
+    implementation(platform("io.projectreactor:reactor-bom:2020.0.7"))
+//    implementation("io.projectreactor:reactor-core")
     implementation("io.projectreactor.kotlin:reactor-kotlin-extensions")
     implementation("io.projectreactor.netty:reactor-netty")
 
