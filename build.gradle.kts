@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.exposed.java.time)
     implementation("com.h2database:h2")
     implementation("com.zaxxer:HikariCP")
+
+    implementation("org.jsoup:jsoup:1.15.3")
 }
 
 configure<JavaPluginConvention> {
